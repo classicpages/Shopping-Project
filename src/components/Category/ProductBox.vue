@@ -16,13 +16,13 @@
       <p class="card-text font-italic">
         {{ product.description }}...
       </p>
-      <!-- <router-link
+      <router-link
         id="edit-product"
         :to="{ name: 'EditProduct', params: { id: product.id } }"
         v-show="$route.name == 'AdminProduct'"
       >
         Edit
-      </router-link> -->
+      </router-link>
     </div>
   </div>
 </template>

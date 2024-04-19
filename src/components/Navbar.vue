@@ -200,4 +200,7 @@
   #cart {
     position: relative;
   }
+  .navbar {
+    margin-bottom: 15px;
+  }
   </style>

@@ -2,18 +2,17 @@
   <div class="container">
     <div class="row">
       <div class="col-12 text-center">
-        <h4 class="pt-3">Add new Product</h4>
-
+        <h4 class="pt-3">Edit Product</h4>
       </div>
     </div>
 
     <div class="row">
       <div class="col-3"></div>
       <div class="col-md-6 px-5 px-md-0">
-        <form>
+        <form v-if="product">
           <div class="form-group">
             <label>Category</label>
-            <select class="form-control" v-model="categoryId" required>
+            <select class="form-control" v-model="product.categoryId" required>
               <option
                 v-for="category of categories"
                 :key="category.id"
@@ -25,14 +24,19 @@
           </div>
           <div class="form-group">
             <label>Name</label>
-            <input type="text" class="form-control" v-model="name" required />
+            <input
+              type="text"
+              class="form-control"
+              v-model="product.name"
+              required
+            />
           </div>
           <div class="form-group">
             <label>Description</label>
             <input
               type="text"
               class="form-control"
-              v-model="description"
+              v-model="product.description"
               required
             />
           </div>
@@ -41,7 +45,7 @@
             <input
               type="url"
               class="form-control"
-              v-model="imageURL "
+              v-model="product.imageURL"
               required
             />
           </div>
@@ -50,11 +54,11 @@
             <input
               type="number"
               class="form-control"
-              v-model="price"
+              v-model="product.price"
               required
             />
           </div>
-          <button type="button" class="btn btn-primary" @click="addProduct">
+          <button type="button" class="btn btn-primary" @click="editProduct">
             Submit
           </button>
         </form>
@@ -70,53 +74,32 @@ import swal from "sweetalert";
 export default {
   data() {
     return {
-      id: null,
-      categoryId: null,
-      name: null,
-      description: null,
-      imageURL: [],
-      price: null,
+      product: null,
     };
   },
-  props: ["baseURL", "product", "categories"],
+  props: ["baseURL", "products", "categories"],
   methods: {
-    async addProduct() {
-      const newProduct = {
-        id: this.id,
-        categoryId: this.categoryId,
-        name: this.name,
-        description: this.description,
-        imageURL: this.imageURL,
-        price: this.price,
-      };
-
-      await axios({
-        method: "post",
-        url: this.baseURL + "product/add",
-        data: JSON.stringify(newProduct),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+    async editProduct() {
+        await axios
+        .post(`${this.baseURL}product/update/${this.id}`, this.product)
         .then(() => {
           //sending the event to parent to handle
           this.$emit("fetchData");
-          this.$router.push({ name: 'AdminProduct' });
+          this.$router.push({ name: "AdminProduct" });
           swal({
-            text: "Product Added Successfully!",
+            text: "Product Updated Successfully!",
             icon: "success",
             closeOnClickOutside: false,
           });
         })
-        .catch((err) => console.log(err));
-
+        .catch((err) => console.log("err", err));
     },
   },
-  // mounted() {
-  //   if (!localStorage.getItem("token")) {
-  //     this.$router.push({ name: "Signin" });
-  //   }
-  // },
+  mounted() {
+    
+    this.id = this.$route.params.id;
+    this.product = this.products.find((product) => product.id == this.id);
+  },
 };
 </script>
 
