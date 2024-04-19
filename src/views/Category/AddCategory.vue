@@ -39,7 +39,7 @@ export default {
     return {
       categoryName: "",
       description: "",
-      imageUrl: "",
+      imageURL: "",
     };
   },
 
@@ -49,9 +49,9 @@ export default {
       const newCategory = {
         categoryName: this.categoryName,
         description: this.description,
-        imageUrl: this.imageUrl,
+        imageUrl: this.imageURL,
       };     
-       const baseURL = "https://limitless-lake-55070.herokuapp.com";
+       const baseURL = "https://limitless-lake-55070.herokuapp.com/";
 
       axios({
         method: "post",
